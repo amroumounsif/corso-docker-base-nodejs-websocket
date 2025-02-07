@@ -123,4 +123,73 @@ Per uscire dal container senza fermarlo, basta usare:
 
 CTRL + p + q
 
+## Volumi in Docker
+
+I **volumi** in Docker sono aree di memorizzazione persistente che permettono di mantenere i dati anche quando un container viene eliminato. Questo è utile per situazioni in cui i dati devono persistere tra i riavvii del container o tra l'esecuzione di diversi container.
+
+### Tipi di Volumi
+
+1. **Volumi Docker (Docker Volumes)**
+   - I volumi Docker sono gestiti direttamente da Docker e sono indipendenti dal ciclo di vita dei container.
+   - Sono ideali per archiviare dati persistenti come database, log e configurazioni.
+   - I volumi sono memorizzati in una directory all'interno del file system dell'host e possono essere condivisi tra più container.
+
+2. **Montaggio di Volumi (Volume Mounts)**
+   - Si riferisce all'azione di "montare" una directory del sistema host come volume all'interno di un container. 
+   - Questo può essere utile per condividere file tra il container e l'host, oppure per permettere a più container di accedere ai medesimi dati.
+
+### Creazione e Uso dei Volumi
+
+#### Creare un Volume
+Per creare un volume, puoi utilizzare il comando:
+```
+docker volume create nome_volume
+```
+
+Esempio:
+```
+docker volume create my_volume
+```
+
+Montare un Volume in un Container
+Per montare un volume su un container, puoi usare l'opzione -v o --mount al momento dell'esecuzione del container. La sintassi di base è:
+```
+docker run -v nome_volume:/percorso/container nome_immagine
+```
+
+Esempio con -v:
+```
+docker run -v my_volume:/data alpine
+```
+
+In questo esempio, il volume my_volume verrà montato sulla directory /data all'interno del container.
+
+Volumi con Docker Compose
+Quando utilizzi Docker Compose per gestire più container, puoi definire i volumi all'interno del file docker-compose.yml:
+
+Ispezionare un Volume
+Per vedere i dettagli di un volume, puoi utilizzare il comando:
+```
+docker volume inspect nome_volume
+```
+
+Rimuovere un Volume
+Per rimuovere un volume quando non è più necessario, usa il comando:
+```
+docker volume rm nome_volume
+```
+
+Nota: I volumi non vengono eliminati automaticamente quando si rimuove un container. Se vuoi rimuovere tutti i volumi non utilizzati, puoi utilizzare:
+```
+docker volume prune
+```
+
+Vantaggi dell'Uso dei Volumi
+Persistenza dei dati: Anche se un container viene eliminato, i dati nel volume non vengono persi.
+Condivisione dei dati: I volumi possono essere facilmente condivisi tra più container, consentendo la collaborazione sui dati tra servizi diversi.
+Backup e ripristino: I volumi possono essere facilmente sottoposti a backup o migrati su altre macchine.
+Indipendenza dal filesystem host: I volumi sono indipendenti dal filesystem dell'host, quindi è più facile gestire i dati e mantenerli in sicurezza.
+Differenza tra Volumi e Bind Mounts
+I bind mounts sono simili ai volumi, ma differiscono per il fatto che si collegano direttamente a una specifica directory del sistema host, anziché a una gestione separata dei dati. I volumi, invece, sono la soluzione più portabile e sicura per la persistenza dei dati in Docker.
+
 Nota: Per maggiori dettagli sui comandi, consulta la documentazione ufficiale di Docker: https://docs.docker.com/
