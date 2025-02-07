@@ -104,6 +104,11 @@ Esempio:
 docker run -e "MY_ENV_VAR=value" alpine
 ```
 
+```
+docker remove -f(force) per forzare la chiusura di un programma
+```
+
+
 Esecuzione di Comandi nei Container
 Per eseguire comandi in un container in esecuzione:
 ```
@@ -192,4 +197,36 @@ Indipendenza dal filesystem host: I volumi sono indipendenti dal filesystem dell
 Differenza tra Volumi e Bind Mounts
 I bind mounts sono simili ai volumi, ma differiscono per il fatto che si collegano direttamente a una specifica directory del sistema host, anziché a una gestione separata dei dati. I volumi, invece, sono la soluzione più portabile e sicura per la persistenza dei dati in Docker.
 
+
+
+
 Nota: Per maggiori dettagli sui comandi, consulta la documentazione ufficiale di Docker: https://docs.docker.com/
+
+
+docker run -it -d --name alpine1  -v app:/app -v dati:/dati alpine
+
+Creare un file .tar:
+Supponiamo di voler fare un backup di una cartella chiamata myfolder.
+
+Comando base:
+```
+tar -cvf backup.tar myfolder/
+```
+
+Spiegazione delle opzioni:
+
+-c: Crea un nuovo archivio.
+-v: Modalità verbosa (opzionale). Mostra l'elenco dei file mentre vengono aggiunti all'archivio.
+-f: Indica il nome del file dell'archivio. In questo caso, si chiama backup.tar.
+Esempio completo:
+Se vuoi fare il backup della cartella myfolder nella stessa directory, l'output sarà un file backup.tar che conterrà il contenuto di myfolder.
+
+#### volume binding 
+Vantaggi del Volume Binding:
+Persistenza dei Dati: I dati sono persistenti anche se il container viene eliminato. Se monti una cartella o un file dal tuo host nel container, i dati rimarranno sul sistema host e non verranno cancellati con il container.
+Condivisione dei Dati: Puoi facilmente condividere dati tra il sistema host e i container.
+Gestione dei Dati: Utilizzando volumi Docker, puoi avere una gestione centralizzata dei dati e persisterli anche se i container vengono ricreati.
+
+server web nginx
+
+well non ports
