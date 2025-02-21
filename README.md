@@ -227,6 +227,103 @@ Persistenza dei Dati: I dati sono persistenti anche se il container viene elimin
 Condivisione dei Dati: Puoi facilmente condividere dati tra il sistema host e i container.
 Gestione dei Dati: Utilizzando volumi Docker, puoi avere una gestione centralizzata dei dati e persisterli anche se i container vengono ricreati.
 
-server web nginx
+## port forwarding
 
-well non ports
+Il port forwarding è una tecnica che permette di reindirizzare il traffico di rete da una porta di un dispositivo a un'altra porta su un altro dispositivo. Viene utilizzato per consentire l'accesso a servizi interni da una rete esterna, come accade con server web, giochi online, o applicazioni in container Docker.
+
+Tipologie di Port Forwarding
+Port Forwarding Statico
+
+Associa una porta specifica del router a un dispositivo interno in modo permanente.
+Esempio: Se vuoi accedere a un server web locale sulla porta 8080, puoi mappare la porta 80 pubblica al tuo IP locale sulla porta 8080.
+Port Forwarding Dinamico
+
+Usato in VPN e SSH per creare tunnel sicuri.
+Permette di inoltrare richieste da una porta locale a destinazioni remote in modo dinamico.
+Port Triggering
+
+Simile al port forwarding statico, ma si attiva solo quando un dispositivo invia traffico su una porta specifica.
+Utile per applicazioni che usano porte diverse per connessioni in entrata e in uscita.
+Esempio di Port Forwarding in Docker
+Nel contesto Docker, il port forwarding si usa per esporre le porte di un container sulla macchina host.
+Se avvii un container con:
+
+```
+docker run -p 8080:80 nginx
+```
+La porta 8080 dell’host verrà reindirizzata alla porta 80 del container, permettendo di accedere a Nginx via http://localhost:8080.
+Configurazione del Port Forwarding nel Router
+Se vuoi rendere accessibile un server nella tua rete locale (ad esempio un server web su un Raspberry Pi) da Internet, devi:
+
+Accedere al pannello di controllo del router.
+Cercare la sezione "Port Forwarding" o "Virtual Server".
+Creare una regola, specificando:
+Porta esterna: La porta pubblica (es. 8080).
+Indirizzo IP locale: L’IP del dispositivo interno (es. 192.168.1.10).
+Porta interna: La porta del servizio interno (es. 80 per un web server).
+Protocollo: TCP, UDP o entrambi.
+Salvare e testare la connessione dall’esterno.
+Se vuoi accedere al tuo server da Internet senza conoscere l’IP pubblico, puoi usare servizi DDNS (Dynamic DNS) come No-IP o DuckDNS.
+
+## RETI
+
+Tipologie di Reti in Docker
+Docker fornisce diversi tipi di reti predefinite, ognuna con caratteristiche specifiche:
+
+Bridge (predefinita)
+
+È la rete usata di default se non ne specifichi una.
+I container collegati alla stessa rete bridge possono comunicare tra loro.
+Per comunicare con l’esterno, è necessario esporre porte (-p 8080:80).
+Comando per creare un container in una rete bridge:
+
+```
+docker network create my_bridge
+docker run --network=my_bridge my_container
+```
+#### Host
+Il container usa la rete del sistema host, senza isolamento.
+Nessuna mappatura delle porte (-p non serve).
+Utile per applicazioni che devono avere massima performance di rete.
+Esempio:
+
+```
+docker run --network=host nginx
+```
+
+#### None
+Il container non ha accesso alla rete.
+Utile per container isolati che non devono comunicare con altri.
+Overlay
+
+Serve per connettere container su host diversi in un cluster Docker Swarm.
+Crea una rete distribuita tra più nodi.
+Esempio:
+```
+docker network create --driver overlay my_overlay
+```
+
+#### Macvlan
+Permette ai container di avere un indirizzo IP direttamente dalla rete fisica.
+Utile per applicazioni che richiedono un’identità di rete unica.
+Comandi Utili per Gestire le Reti
+Visualizzare le reti disponibili
+```
+docker network ls
+```
+
+#### Creare una rete personalizzata
+```
+docker network create my_network
+```
+
+#### Collegare un container a una rete
+```
+docker network connect my_network my_container
+```
+#### Rimuovere una rete
+```
+docker network rm my_network
+```
+Le reti Docker sono fondamentali per far comunicare i container in modo sicuro e scalabile.
+
