@@ -1,0 +1,12 @@
+services:
+  chat-server:
+    build:
+      context: .
+      dockerfile: server/Dockerfile  # Specifica il percorso corretto
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./client:/usr/src/app/client
+    environment:
+      - NODE_ENV=development
+    restart: unless-stopped

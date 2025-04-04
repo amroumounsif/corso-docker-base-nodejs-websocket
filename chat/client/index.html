@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <title>Chat di Gruppo</title>
+  <style>
+    body { font-family: Arial, sans-serif; max-width: 800px; margin: 0 auto; padding: 20px; }
+    #chat-container { display: none; }
+    #messages { list-style: none; padding: 0; height: 300px; overflow-y: scroll; border: 1px solid #ddd; padding: 10px; }
+    .notification { color: #666; font-style: italic; }
+    #users { list-style: none; padding: 0; border: 1px solid #ddd; padding: 10px; }
+    form { margin-top: 10px; }
+    input { padding: 8px; width: 70%; }
+    button { padding: 8px 15px; }
+  </style>
+</head>
+<body>
+  <div id="nickname-form">
+    <h1>Registrazione Chat</h1>
+    <form>
+      <input type="text" id="nickname" placeholder="Scegli il tuo nickname" required>
+      <button type="submit">Entra in Chat</button>
+    </form>
+  </div>
+
+  <div id="chat-container">
+    <h1>Chat di Gruppo</h1>
+    <div style="display: flex; gap: 20px;">
+      <div style="flex: 3;">
+        <h2>Messaggi</h2>
+        <ul id="messages"></ul>
+        <form id="message-form">
+          <input type="text" id="message" placeholder="Scrivi un messaggio..." required>
+          <button type="submit">Invia</button>
+        </form>
+      </div>
+      <div style="flex: 1;">
+        <h2>Utenti Online</h2>
+        <ul id="users"></ul>
+      </div>
+    </div>
+  </div>
+
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
