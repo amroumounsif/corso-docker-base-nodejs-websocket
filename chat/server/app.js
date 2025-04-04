@@ -7,6 +7,8 @@ const app = express();
 const server = http.createServer(app);
 const io = socketIo(server);
 
+// ✅ Mappa utenti
+const users = new Map();
 
 // Configurazione file statici
 app.use(express.static(path.join(__dirname, 'client')));
@@ -15,7 +17,6 @@ app.use(express.static(path.join(__dirname, 'client')));
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'client', 'index.html'));
 });
-// ... (il resto del codice Socket.IO rimane uguale)
 
 // Gestione connessioni Socket.IO
 io.on('connection', (socket) => {
@@ -48,12 +49,15 @@ io.on('connection', (socket) => {
   // Aggiorna lista utenti per tutti i client
   function updateUserList() {
     const userList = Array.from(users.values()).map(user => user.nickname);
+    console.log('Utenti attualmente connessi:', userList);
     io.emit('user list', userList);
   }
-});
+
+}); 
 
 // Avvia server
 const PORT = process.env.PORT || 3000;
 server.listen(PORT, () => {
   console.log(`Server in ascolto sulla porta ${PORT}`);
 });
+
